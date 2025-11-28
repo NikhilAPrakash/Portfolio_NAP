@@ -1,0 +1,108 @@
+.ach-section {
+  padding: 5rem 1.5rem;
+}
+
+.ach-heading {
+  text-align: center;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+}
+
+.ach-subheading {
+  max-width: 1100px;
+  margin: 0 auto 1rem auto;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Grid layout similar to Projects/Skills */
+.ach-grid {
+  max-width: 1100px;
+  margin: 0 auto 2.5rem auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.8rem;
+}
+
+.ach-card {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  padding: 1.6rem 1.9rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  color: #f5f7fa;
+
+  /* fade / slide defaults */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out,
+    box-shadow 0.2s ease-out;
+}
+
+.ach-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ach-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+}
+
+.ach-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.ach-meta {
+  margin: 0 0 0.7rem;
+  font-size: 0.9rem;
+  color: #9aa4b2;
+}
+
+/* Chips for skills on each cert */
+.ach-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.8rem;
+}
+
+.ach-chip {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #1f6feb;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Link button */
+.ach-link-btn {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #1f6feb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #f5f7fa;
+  background: transparent;
+}
+
+.ach-link-btn:hover {
+  background: #1f6feb;
+}
+
+/* Mobile: 1 column */
+@media (max-width: 900px) {
+  .ach-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ach-card {
+    padding: 1.4rem 1.6rem;
+  }
+}

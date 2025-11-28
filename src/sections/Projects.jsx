@@ -1,5 +1,5 @@
 // src/sections/Projects.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Projects.css";
 import projects from "../data/projectdata";
 // Example image imports (optional)
@@ -10,11 +10,11 @@ import projects from "../data/projectdata";
 
 const Projects = () => {
   const [activeProject, setActiveProject] = useState(null);
+  const sectionRef = useRef(null);
 
   const openModal = (project) => {
     setActiveProject(project);
-    // optional: prevent background scroll
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // prevent background scroll
   };
 
   const closeModal = () => {
@@ -22,8 +22,34 @@ const Projects = () => {
     document.body.style.overflow = "";
   };
 
+  // Fade in / out cards on scroll
+  useEffect(() => {
+    const sectionEl = sectionRef.current;
+    if (!sectionEl) return;
+
+    const cards = sectionEl.querySelectorAll(".project-card");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          } else {
+            entry.target.classList.remove("visible");
+          }
+        });
+      },
+      {
+        threshold: 0.2
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="projects" className="projects-section">
+    <section id="projects" className="projects-section" ref={sectionRef}>
       <h2 className="projects-heading">Projects</h2>
 
       <div className="projects-grid">
@@ -58,6 +84,7 @@ const Projects = () => {
                   GitHub
                 </a>
               )}
+
               {proj.demo && (
                 <a
                   href={proj.demo}
@@ -68,16 +95,6 @@ const Projects = () => {
                   Live Demo
                 </a>
               )}
-                {proj.docs && (
-                <a
-                href={proj.docs}
-                target="_blank"
-                rel="noreferrer"
-                className="project-btn project-btn-secondary"
-                >
-                Documentation
-                </a>
-            )}
 
               {proj.details && (
                 <button
@@ -98,7 +115,7 @@ const Projects = () => {
         <div className="project-modal-backdrop" onClick={closeModal}>
           <div
             className="project-modal"
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               type="button"
@@ -107,7 +124,7 @@ const Projects = () => {
             >
               ✕
             </button>
-
+            {activeProject.wip && <span className="project-wip-badge">WIP</span>}
             <h3 className="project-modal-title">{activeProject.title}</h3>
             <p className="project-modal-role">{activeProject.role}</p>
 
@@ -124,18 +141,6 @@ const Projects = () => {
                 ))}
               </ul>
             )}
-            {activeProject.docs && (
-                <div style={{ marginBottom: "1rem" }}>
-                    <a
-                    href={activeProject.docs}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-btn project-btn-secondary"
-                    >
-                    View Documentation
-                    </a>
-                </div>
-                )}
 
             {activeProject.details?.images?.length > 0 && (
               <div className="project-modal-images">
